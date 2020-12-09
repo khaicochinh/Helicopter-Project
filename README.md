@@ -19,3 +19,8 @@
 #### Topic: Programming C ++ games using SDL
 Content: Programming and creating Helicopter game using C ++ language and SDL library (Simple DirectMedia Layer)
 
+### About project
+- Main language: C ++
+- IDE: Visual Studio 2012
+- Programming library: SDL
+- Design tool: Canva
