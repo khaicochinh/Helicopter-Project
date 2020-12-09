@@ -5,6 +5,7 @@
 1. [Introduction](#introduction)
 2. [Team member](#team-member)
 3. [Our project](#our-project)
+4. [About project](#about-project)
 
 ## Introduction 
 #### This is a project for C / C ++ programming subject
@@ -19,7 +20,7 @@
 #### Topic: Programming C ++ games using SDL
 Content: Programming and creating Helicopter game using C ++ language and SDL library (Simple DirectMedia Layer)
 
-### About project
+## About project
 - Main language: C ++
 - IDE: Visual Studio 2012
 - Programming library: SDL
