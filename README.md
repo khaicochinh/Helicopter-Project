@@ -1,5 +1,5 @@
 # HELICOPTER PROJECT
-[![Build Status](https://www.cplusplus.com/?branch=master)](https://www.cplusplus.com/)
+-------------------------------
 
 # Table of Contents
 1. [Introduction](#introduction)
