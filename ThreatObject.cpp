@@ -34,14 +34,14 @@ void ThreatObject::InitAmo(AmoObject* p_amo)
 {
 	if(p_amo)
 	{
-		bool ret = p_amo->LoadImg("rocket-threat.png");
+		bool ret = p_amo->LoadImg("bullet_threat.png");
 		if(ret)
 		{
 			p_amo->set_is_move(true);
 			p_amo->SetWidthHeight(WIDTH_SPHERE, HEIGHT_SPHERE);
 			p_amo->set_type(AmoObject::SPHERE);
-			p_amo->SetRect(rect_.x - 50, rect_.y + rect_.h*1.2);
-			p_amo->set_x_val(8);
+			p_amo->SetRect(rect_.x, rect_.y + rect_.h*0.5);
+			p_amo->set_x_val(9);
 			p_amo_list_.push_back(p_amo);
 		}
 	}
@@ -86,4 +86,31 @@ void ThreatObject::HandleMove(const int& x_border, const int& y_border)
 
 void ThreatObject::HandleInputAction(SDL_Event events)
 {
+}
+
+void ThreatObject:: Reset(const int& xborder)
+{
+	// reset lai vi tri cua ca doi tuong sau khi va cham
+	rect_.x = xborder;
+	int rand_y = rand()%400;
+	if(rand_y > SCREEN_HEIGHT - UNDER_LIMIT_THREAT)
+	{
+		rand_y = SCREEN_HEIGHT*0.3;
+	}
+
+	rect_.y = rand_y;
+
+	for(int i = 0; i < p_amo_list_.size(); i ++)
+	{
+		AmoObject* p_amo = p_amo_list_.at(i);
+		if(p_amo)
+		{
+			ResetAmo(p_amo);
+		}
+	}
+}
+
+void ThreatObject:: ResetAmo(AmoObject* p_amo)
+{
+	p_amo->SetRect(rect_.x - 50, rect_.y + rect_.h*1.2);
 }

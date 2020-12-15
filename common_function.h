@@ -8,9 +8,10 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+
 using namespace std;
 // dinh dang cac thong so co dinh cho man hinh
-const int WIDTH_BACKGROUND = 4800;
+const int WIDTH_BACKGROUND = 7200;
 const int HEIGHT_BACKGROUND = 600;
 const int SCREEN_WITH = 1200;
 const int SCREEN_HEIGHT = 600;
@@ -27,7 +28,9 @@ namespace SDLCommonFunc
 {
 	SDL_Surface* LoadImage(string file_path);
 	void ApplySurface(SDL_Surface* src, SDL_Surface* des, int x, int y);
+	void AppluSurfaceClip(SDL_Surface* src, SDL_Surface* des, SDL_Rect* clip, int x, int y); // apply surface for explosion
 	void CleanUp();
+	bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2);
 }
 
 #endif

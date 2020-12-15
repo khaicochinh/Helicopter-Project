@@ -5,9 +5,10 @@
 #include "BaseObject.h"
 #include "AmoObject.h"
 #include <vector> 
+#include "MainObject.h"
 
-#define WIDTH_THREAT 100
-#define HEIGHT_THREAT 40
+#define WIDTH_THREAT 120
+#define HEIGHT_THREAT 80
 
 const int UNDER_LIMIT_THREAT = 200;
 
@@ -29,6 +30,8 @@ public:
 	std::vector<AmoObject*> GetAmoList() const {return p_amo_list_;}
 	void InitAmo(AmoObject* p_amo); // tao dan cho threat
 	void MakeAmo(SDL_Surface* des, const int& x_limit, const int& y_limit); // gioi han cua vien dan ban ra
+	void Reset(const int& xborder);
+	void ResetAmo(AmoObject* p_amo);
 private:
 	int x_val_;
 	int y_val_;

@@ -64,17 +64,17 @@ void MainObject:: HandleInputAction(SDL_Event events)
 		if(events.button.button == SDL_BUTTON_LEFT)
 		{
 			p_amo->SetWidthHeight(WIDTH_LASER, HEIGHT_LASER);
-			p_amo->LoadImg("rocket.png");
+			p_amo->LoadImg("bullet_main.png");
 			p_amo->set_type(AmoObject::LASER);
 		}
 		else if(events.button.button == SDL_BUTTON_RIGHT)
 		{
 			p_amo->SetWidthHeight(WIDTH_SPHERE, HEIGHT_SPHERE);
-			p_amo->LoadImg("laser2.png");
+			p_amo->LoadImg("bullet_main1.png");
 			p_amo->set_type(AmoObject::SPHERE);
 		}
 
-		p_amo->SetRect(this->rect_.x + this->rect_.w - 20, this->rect_.y + this->rect_.h - 40 );
+		p_amo->SetRect(this->rect_.x + this->rect_.w - 20, this->rect_.y + this->rect_.h - 90);
 		p_amo->set_is_move(true);
 		p_amo->set_x_val(20);
 		p_amo_list_.push_back(p_amo);
@@ -127,5 +127,23 @@ void MainObject:: HandleMove()
 	if(rect_.y < 0 || rect_.y + HEIGHT_MAIN_OBJECT > SCREEN_HEIGHT - 100)
 	{
 		rect_.y -= y_val_;
+	}
+}
+
+void MainObject:: RemoveAmo(const int& idx)
+{
+	for(int i = 0; i < p_amo_list_.size(); i++)
+	{
+		if(idx < p_amo_list_.size())
+		{
+			AmoObject* p_amo = p_amo_list_.at(idx);
+			p_amo_list_.erase(p_amo_list_.begin() + idx);
+
+			if(p_amo != NULL)
+			{
+				delete p_amo;
+				p_amo = NULL;
+			}
+		}
 	}
 }

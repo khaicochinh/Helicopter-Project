@@ -8,8 +8,8 @@
 #include <vector>
 
 // dinh nghia size
-#define WIDTH_MAIN_OBJECT 100
-#define HEIGHT_MAIN_OBJECT 100
+#define WIDTH_MAIN_OBJECT 120
+#define HEIGHT_MAIN_OBJECT 120
 
 // class ke thua Base Object
 class MainObject : public BaseObject
@@ -22,7 +22,8 @@ public:
 	void HandleMove();
 	void SetAmoList(std::vector<AmoObject*> amo_list) {p_amo_list_ = amo_list;}
 	std::vector<AmoObject*> GetAmoList() const {return p_amo_list_;}
-	void MakeAmo(SDL_Surface* des);
+	void MakeAmo(SDL_Surface* des); // tao doi tuong bullet
+	void MainObject:: RemoveAmo(const int& idx); // remove bullet
 
 private:
 	int x_val_;
