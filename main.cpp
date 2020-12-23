@@ -23,8 +23,25 @@ bool Init()
 	}
 
 	g_screen = SDL_SetVideoMode(SCREEN_WITH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
+	
 	if(g_screen == NULL)
 		return false;
+
+	if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1 )
+		return false;
+
+	// read file .wav audio
+	g_sound_bg = Mix_LoadWAV("avenger_soundtrack.wav");
+	g_sound_bullet[0] = Mix_LoadWAV("bullet_main.wav");
+	g_sound_bullet[1] = Mix_LoadWAV("bullet_main1.wav");
+	g_sound_exp[0] = Mix_LoadWAV("explosion1.wav");
+	g_sound_exp[1] = Mix_LoadWAV("explosion.wav");
+	// g_sound_exp[2] = Mix_LoadWAV("game_over.wav");
+
+	if(g_sound_bg == NULL || g_sound_exp[0] == NULL || g_sound_bullet[0] == NULL || g_sound_bullet[1] == NULL || g_sound_exp[1] == NULL)
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -47,7 +64,7 @@ int main(int arc, char*argv[])
 	{
 		return 0;
 	}
-	
+	Mix_PlayChannel(-1, g_sound_bg, 0);
 	// create object of type MainObject
 	MainObject plane_object; 
 	plane_object.SetRect(100, 200);
@@ -103,7 +120,7 @@ int main(int arc, char*argv[])
 				is_quit = true;
 				break;
 			}
-			plane_object.HandleInputAction(g_even);
+			plane_object.HandleInputAction(g_even, g_sound_bullet);
 		}
 
 		// apply background
@@ -138,8 +155,6 @@ int main(int arc, char*argv[])
 		plane_object.HandleMove();
 		plane_object.Show(g_screen); // update lai vi tri cua doi tuong
 		plane_object.MakeAmo(g_screen);
-
-
 		// implement threat object
 		for(int tt = 0; tt < NUM_THREATS; tt++)
 		{
@@ -174,6 +189,8 @@ int main(int arc, char*argv[])
 							return 0;
 					}
 
+					Mix_PlayChannel(-1, g_sound_exp[1], 0);
+
 					if(MessageBox(NULL, L"GAME OVER!", L"Notice", MB_OK) == IDOK)
 					{
 						delete [] p_threats; 
@@ -198,7 +215,7 @@ int main(int arc, char*argv[])
 								int x_pos = (plane_object.GetRect().x + plane_object.GetRect().w*0.5) - EXP_WIDTH*0.5;
 								int y_pos = (plane_object.GetRect().y + plane_object.GetRect().h*0.5) - EXP_HEIGHT*0.5;
 
-								exp_main.set_frame(ex);
+								exp_main.set_frame(ex); 
 								exp_main.SetRect(x_pos, y_pos);
 								exp_main.ShowEx(g_screen);
 
@@ -208,7 +225,7 @@ int main(int arc, char*argv[])
 								if(SDL_Flip(g_screen) == -1)
 									return 0;
 							}
-
+							Mix_PlayChannel(-1, g_sound_exp[1], 0);
 							if(MessageBox(NULL, L"GAME OVER!", L"Notice ^^", MB_OK) == IDOK)
 							{
 								/*delete [] p_threats; 
@@ -231,8 +248,8 @@ int main(int arc, char*argv[])
 						{
 							for(int ex = 0; ex < 4; ex ++)
 							{
-								int x_pos = (p_amo->GetRect().x + p_amo->GetRect().w*0.5) - EXP_WIDTH*0.5;
-								int y_pos = (p_amo->GetRect().y + p_amo->GetRect().h*0.5) - EXP_HEIGHT*0.5;
+								int x_pos = p_amo->GetRect().x - EXP_WIDTH*0.5;
+								int y_pos = p_amo->GetRect().y - EXP_HEIGHT*0.5;
 
 								exp_main.set_frame(ex);
 								exp_main.SetRect(x_pos, y_pos);
@@ -242,8 +259,9 @@ int main(int arc, char*argv[])
 								if(SDL_Flip(g_screen) == -1)
 									return 0;
 							}
-							p_threat->Reset(SCREEN_WITH + tt*300);
+							p_threat->Reset(SCREEN_WITH + tt*400);
 							plane_object.RemoveAmo(am);
+							Mix_PlayChannel(-1, g_sound_exp[0], 0); 
 						}
 					}
 				}

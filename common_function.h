@@ -7,6 +7,7 @@
 #include <string>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 
 
 using namespace std;
@@ -22,6 +23,10 @@ const int NUM_THREATS = 3; // so luong cac threat
 static SDL_Surface *g_screen = NULL;
 static SDL_Surface *g_bkground = NULL;
 static SDL_Event g_even;
+
+static Mix_Chunk* g_sound_bg;
+static Mix_Chunk* g_sound_bullet[2];
+static Mix_Chunk* g_sound_exp[3];
 
 // xu ly tranh trung lap ham 
 namespace SDLCommonFunc

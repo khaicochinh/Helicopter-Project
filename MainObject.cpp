@@ -16,7 +16,7 @@ MainObject:: ~MainObject()
 	;
 }
 
-void MainObject:: HandleInputAction(SDL_Event events)
+void MainObject:: HandleInputAction(SDL_Event events, Mix_Chunk* bullet_sound[2])
 {
 	if(events.type == SDL_KEYDOWN) // bat su kien phim nhan xuong
 	{
@@ -66,12 +66,14 @@ void MainObject:: HandleInputAction(SDL_Event events)
 			p_amo->SetWidthHeight(WIDTH_LASER, HEIGHT_LASER);
 			p_amo->LoadImg("bullet_main.png");
 			p_amo->set_type(AmoObject::LASER);
+			Mix_PlayChannel(-1, bullet_sound[0], 0);
 		}
 		else if(events.button.button == SDL_BUTTON_RIGHT)
 		{
 			p_amo->SetWidthHeight(WIDTH_SPHERE, HEIGHT_SPHERE);
 			p_amo->LoadImg("bullet_main1.png");
 			p_amo->set_type(AmoObject::SPHERE);
+			Mix_PlayChannel(-1, bullet_sound[1], 0);
 		}
 
 		p_amo->SetRect(this->rect_.x + this->rect_.w - 20, this->rect_.y + this->rect_.h - 90);

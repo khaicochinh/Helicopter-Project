@@ -15,6 +15,7 @@ public:
 	~ExplosionObject();
 	void set_clip();
 	void set_frame(const int& fr) {frame_ = fr;}
+	// function show for explosion
 	void ShowEx(SDL_Surface* des);
 
 private:
