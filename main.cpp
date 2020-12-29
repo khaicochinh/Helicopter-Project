@@ -11,11 +11,12 @@
 #include "MainObject.h"
 #include "ThreatObject.h"
 #include "ExplosionObject.h"
+#include "PlayerPower.h"
 
 using namespace std;
 
 // constructor function
-bool Init()
+bool Init() 
 {
 	if(SDL_Init(SDL_INIT_EVERYTHING) == -1)
 	{
@@ -42,7 +43,6 @@ bool Init()
 	{
 		return false;
 	}
-
 	return true;
 }
 
@@ -64,6 +64,11 @@ int main(int arc, char*argv[])
 	{
 		return 0;
 	}
+
+	//Make player power
+	PlayerPower player_power ;
+	player_power.Init();
+
 	Mix_PlayChannel(-1, g_sound_bg, 0);
 	// create object of type MainObject
 	MainObject plane_object; 
@@ -110,6 +115,8 @@ int main(int arc, char*argv[])
 		}
 	}
 
+	unsigned int die_number = 0 ;//So lan chet cua main
+
 	// handle events
 	while(!is_quit)
 	{
@@ -123,17 +130,6 @@ int main(int arc, char*argv[])
 			plane_object.HandleInputAction(g_even, g_sound_bullet);
 		}
 
-		// apply background
-		// move background : way 1
-		/*bg_x -= 2;
-		SDLCommonFunc:: ApplySurface(g_bkground, g_screen, bg_x, 0);
-		SDLCommonFunc:: ApplySurface(g_bkground, g_screen, bg_x + SCREEN_WITH, 0);
-		if(bg_x <= -SCREEN_WITH)
-		{
-			bg_x = 0;
-		}*/
-
-		// move background : way 2
 		if(is_run_screen == true)
 		{
 			bg_x -= 1;
@@ -150,6 +146,9 @@ int main(int arc, char*argv[])
 		{
 			SDLCommonFunc:: ApplySurface(g_bkground, g_screen, bg_x, 0); 
 		}
+
+		//Show Player power
+		player_power.Render(g_screen) ;
 
 		// implement main object
 		plane_object.HandleMove();
@@ -190,13 +189,28 @@ int main(int arc, char*argv[])
 					}
 
 					Mix_PlayChannel(-1, g_sound_exp[1], 0);
+					die_number++ ;
+					if(die_number <=2 ){
+						SDL_Delay(1000) ;
+						plane_object.SetRect(100,200) ;
+						player_power.Decrease() ;
+						player_power.Render(g_screen) ;
 
-					if(MessageBox(NULL, L"GAME OVER!", L"Notice", MB_OK) == IDOK)
-					{
-						delete [] p_threats; 
-						SDLCommonFunc:: CleanUp();
-						SDL_Quit();
-						return 1;
+						if(SDL_Flip(g_screen) == -1 ){
+							delete [] p_threats ;
+							SDLCommonFunc::CleanUp() ;
+							SDL_Quit() ;
+							return 0 ;
+						}
+					}
+					else{
+						if(MessageBox(NULL, L"GAME OVER!", L"Notice", MB_OK) == IDOK)
+						{
+							delete [] p_threats; 
+							SDLCommonFunc:: CleanUp();
+							SDL_Quit();
+							return 1;
+						}
 					}
 				}
 
@@ -226,12 +240,25 @@ int main(int arc, char*argv[])
 									return 0;
 							}
 							Mix_PlayChannel(-1, g_sound_exp[1], 0);
-							if(MessageBox(NULL, L"GAME OVER!", L"Notice ^^", MB_OK) == IDOK)
-							{
-								/*delete [] p_threats; 
-								SDLCommonFunc:: CleanUp();
-								SDL_Quit();*/
-								return 1;
+							die_number++ ;
+							if(die_number <=2 ){
+								SDL_Delay(1000) ;
+								plane_object.SetRect(100,200) ;
+								player_power.Decrease() ;
+								player_power.Render(g_screen) ;
+
+								if(SDL_Flip(g_screen) == -1 ){
+									delete [] p_threats ;
+									SDLCommonFunc::CleanUp() ;
+									SDL_Quit() ;
+									return 0 ;
+								}
+							}
+							else{
+								if(MessageBox(NULL, L"GAME OVER!", L"Notice ^^", MB_OK) == IDOK)
+								{
+									return 1;
+								}
 							}
 						}
 					}
