@@ -10,7 +10,7 @@ public:
 	~BaseObject(); // ham huy - destroy
 	void Show(SDL_Surface* des);
 	bool LoadImg(const char* file_name);
-	void SetRect(const int& x, const int& y)
+	void SetRect(const int& x, const double& y)
 	{
 		rect_.x = x; 
 		rect_.y = y;

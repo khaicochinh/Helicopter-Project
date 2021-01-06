@@ -41,7 +41,7 @@ void ThreatObject::InitAmo(AmoObject* p_amo)
 			p_amo->SetWidthHeight(WIDTH_SPHERE, HEIGHT_SPHERE);
 			p_amo->set_type(AmoObject::SPHERE);
 			p_amo->SetRect(rect_.x, rect_.y + rect_.h*0.5);
-			p_amo->set_x_val(9);
+			p_amo->set_x_val(6);
 			p_amo_list_.push_back(p_amo);
 		}
 	}
@@ -62,7 +62,7 @@ void ThreatObject::MakeAmo(SDL_Surface* des, const int& x_limit, const int& y_li
 			else // neu dan da di qua man hinh thi set lai vi tri ban dau cho dan
 			{
 				p_amo->set_is_move(true);
-				p_amo->SetRect(rect_.x - 50, rect_.y + rect_.h*1.2);
+				p_amo->SetRect(rect_.x - 50, rect_.y + rect_.h);
 			}
 		}
 	}

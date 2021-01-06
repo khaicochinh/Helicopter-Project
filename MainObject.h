@@ -8,8 +8,8 @@
 #include <vector>
 
 // dinh nghia size
-#define WIDTH_MAIN_OBJECT 120
-#define HEIGHT_MAIN_OBJECT 120
+#define WIDTH_MAIN_OBJECT 60
+#define HEIGHT_MAIN_OBJECT 30
 
 // class ke thua Base Object
 class MainObject : public BaseObject

@@ -23,16 +23,16 @@ void MainObject:: HandleInputAction(SDL_Event events, Mix_Chunk* bullet_sound[2]
 		switch (events.key.keysym.sym)
 		{
 		case SDLK_UP: 
-			y_val_ -= HEIGHT_MAIN_OBJECT/15; // do cao giam xuong 
+			y_val_ -= HEIGHT_MAIN_OBJECT/10; // do cao giam xuong 
 			break;
 		case SDLK_DOWN: 
-			y_val_ += HEIGHT_MAIN_OBJECT/15;
+			y_val_ += HEIGHT_MAIN_OBJECT/10;
 			break;
 		case SDLK_RIGHT: 
-			x_val_ += WIDTH_MAIN_OBJECT/15;
+			x_val_ += WIDTH_MAIN_OBJECT/10;
 			break;
 		case SDLK_LEFT: 
-			x_val_ -= WIDTH_MAIN_OBJECT/15;
+			x_val_ -= WIDTH_MAIN_OBJECT/10;
 			break;
 		default:
 			break;
@@ -43,16 +43,16 @@ void MainObject:: HandleInputAction(SDL_Event events, Mix_Chunk* bullet_sound[2]
 		switch (events.key.keysym.sym)
 		{
 		case SDLK_UP: 
-			y_val_ += HEIGHT_MAIN_OBJECT/15; // do cao giam xuong 
+			y_val_ += HEIGHT_MAIN_OBJECT/10; // do cao giam xuong 
 			break;
 		case SDLK_DOWN: 
-			y_val_ -= HEIGHT_MAIN_OBJECT/15;
+			y_val_ -= HEIGHT_MAIN_OBJECT/10;
 			break;
 		case SDLK_RIGHT: 
-			x_val_ -= WIDTH_MAIN_OBJECT/15;
+			x_val_ -= WIDTH_MAIN_OBJECT/10;
 			break;
 		case SDLK_LEFT: 
-			x_val_ += WIDTH_MAIN_OBJECT/15;
+			x_val_ += WIDTH_MAIN_OBJECT/10;
 			break;
 		default:
 			break;
@@ -76,7 +76,7 @@ void MainObject:: HandleInputAction(SDL_Event events, Mix_Chunk* bullet_sound[2]
 			Mix_PlayChannel(-1, bullet_sound[1], 0);
 		}
 
-		p_amo->SetRect(this->rect_.x + this->rect_.w - 20, this->rect_.y + this->rect_.h - 90);
+		p_amo->SetRect(this->rect_.x + this->rect_.w, this->rect_.y + this->rect_.h - 15);
 		p_amo->set_is_move(true);
 		p_amo->set_x_val(20);
 		p_amo_list_.push_back(p_amo);

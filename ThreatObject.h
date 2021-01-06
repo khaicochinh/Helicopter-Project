@@ -7,8 +7,8 @@
 #include <vector> 
 #include "MainObject.h"
 
-#define WIDTH_THREAT 120
-#define HEIGHT_THREAT 80
+#define WIDTH_THREAT 60
+#define HEIGHT_THREAT 40
 
 const int UNDER_LIMIT_THREAT = 200;
 

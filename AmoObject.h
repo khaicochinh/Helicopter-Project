@@ -3,11 +3,11 @@
 #define AMO_OBJECT_H_ 
 #include "BaseObject.h"
 
-#define WIDTH_LASER 40
-#define HEIGHT_LASER 40
+#define WIDTH_LASER 10
+#define HEIGHT_LASER 7
 
-#define WIDTH_SPHERE 40
-#define HEIGHT_SPHERE 40
+#define WIDTH_SPHERE 10
+#define HEIGHT_SPHERE 10
 
 // dinh nghia mot lop moi ke thua tu Base Object
 class AmoObject: public BaseObject

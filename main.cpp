@@ -4,13 +4,19 @@
   * This is a Helicopter game programming project
   * Author: Nguyen Van Ninh
   * Start day: 31.10.2020
-  * Date of update: 09.12.2020
+  * Date of update: 03.01.2021
   */
 
 #include "common_function.h"
 #include "MainObject.h"
 #include "ThreatObject.h"
 #include "ExplosionObject.h"
+#include "PlayerPower.h"
+#include "TextObject.h"
+
+
+TTF_Font* g_font_text = NULL;
+TTF_Font* g_font_menu = NULL;
 
 using namespace std;
 
@@ -43,6 +49,18 @@ bool Init()
 		return false;
 	}
 
+	if(TTF_Init() == -1)
+	{
+		return false;
+	}
+
+	g_font_text = TTF_OpenFont("Amatic-Bold.ttf", 20);
+	g_font_menu = TTF_OpenFont("28 Days Later.ttf", 40);
+	if(g_font_text == NULL)
+	{
+		return false;
+	}
+
 	return true;
 }
 
@@ -59,29 +77,39 @@ int main(int arc, char*argv[])
 	}
 
 	// load background
-	g_bkground = SDLCommonFunc:: LoadImage("bg7200_3.png");
+	g_bkground = SDLCommonFunc:: LoadImage("bg7200.png");
 	if(g_bkground == NULL)
 	{
 		return 0;
 	}
 	Mix_PlayChannel(-1, g_sound_bg, 0);
+
+	// make player power
+	PlayerPower player_power ;
+	player_power.Init();
+
+	// text object
+	TextObject time_game;
+	time_game.SetColor(TextObject::BLACK_TEXT);
+
+	TextObject mark_game;
+	mark_game.SetColor(TextObject::BLACK_TEXT);
+
+
 	// create object of type MainObject
 	MainObject plane_object; 
-	plane_object.SetRect(100, 200);
+	plane_object.SetRect(100, 300);
 	bool ret = plane_object.LoadImg("heli_main1.png");
 	if(!ret)
 	{
 		return 0;
 	}
-	
 
 	// init explosion object
 	ExplosionObject exp_main;
 	ret = exp_main.LoadImg("exp_main.png");
 	exp_main.set_clip();
 	if(!ret) return 0;
-
-
 
 	// create threat object
 	ThreatObject* p_threats = new ThreatObject[NUM_THREATS];
@@ -109,6 +137,14 @@ int main(int arc, char*argv[])
 			p_threat->InitAmo(p_amo); // nap dan vao threat
 		}
 	}
+
+	unsigned int die_number = 0 ; // so lan chet cua main
+	unsigned int mark_value = 0; // bien quan ly diem
+
+	// show menu
+	int ret_menu = SDLCommonFunc :: ShowMenu(g_screen, g_font_menu);
+	if(ret_menu == 1)
+		is_quit = true;
 
 	// handle events
 	while(!is_quit)
@@ -151,10 +187,14 @@ int main(int arc, char*argv[])
 			SDLCommonFunc:: ApplySurface(g_bkground, g_screen, bg_x, 0); 
 		}
 
+		// show player power
+		player_power.Render(g_screen) ;
+
 		// implement main object
 		plane_object.HandleMove();
 		plane_object.Show(g_screen); // update lai vi tri cua doi tuong
 		plane_object.MakeAmo(g_screen);
+
 		// implement threat object
 		for(int tt = 0; tt < NUM_THREATS; tt++)
 		{
@@ -190,17 +230,38 @@ int main(int arc, char*argv[])
 					}
 
 					Mix_PlayChannel(-1, g_sound_exp[1], 0);
+					die_number++;
+					if(die_number <=2){
+						SDL_Delay(1500) ;
+						plane_object.SetRect(100, 300) ;
+						player_power.Decrease() ;
+						player_power.Render(g_screen) ;
 
-					if(MessageBox(NULL, L"GAME OVER!", L"Notice", MB_OK) == IDOK)
-					{
-						delete [] p_threats; 
-						SDLCommonFunc:: CleanUp();
-						SDL_Quit();
-						return 1;
+						if(SDL_Flip(g_screen) == -1 ){
+							delete [] p_threats ;
+							SDLCommonFunc::CleanUp() ;
+							SDL_Quit() ;
+							return 0 ;
+						}
+					}
+					else{
+						if(MessageBox(NULL, L"GAME OVER!", L"Notice", MB_OK) == IDOK)
+						{
+							g_game_over = SDLCommonFunc:: LoadImage("gameover.png");
+							if(g_game_over == NULL)
+							{
+								return 0;
+							}
+
+							delete [] p_threats; 
+							SDLCommonFunc:: CleanUp();
+							SDL_Quit();
+							return 1;
+						}
 					}
 				}
 
-				// check collision main & bullet threat
+				// check collision main & threat bullet
 				std::vector<AmoObject*> amo_list = p_threat->GetAmoList();
 				for(int im = 0; im < amo_list.size(); im ++)
 				{
@@ -225,18 +286,42 @@ int main(int arc, char*argv[])
 								if(SDL_Flip(g_screen) == -1)
 									return 0;
 							}
+
 							Mix_PlayChannel(-1, g_sound_exp[1], 0);
-							if(MessageBox(NULL, L"GAME OVER!", L"Notice ^^", MB_OK) == IDOK)
-							{
-								/*delete [] p_threats; 
-								SDLCommonFunc:: CleanUp();
-								SDL_Quit();*/
-								return 1;
+
+							die_number++;
+							if(die_number <=2){
+								SDL_Delay(1500) ;
+								plane_object.SetRect(100, 300) ;
+								player_power.Decrease() ;
+								player_power.Render(g_screen) ;
+
+								if(SDL_Flip(g_screen) == -1 ){
+									delete [] p_threats ;
+									SDLCommonFunc::CleanUp() ;
+									SDL_Quit() ;
+									return 0 ;
+								}
+							}
+							else{
+								if(MessageBox(NULL, L"GAME OVER!", L"Notice", MB_OK) == IDOK)
+								{
+									g_game_over = SDLCommonFunc:: LoadImage("gameover.png");
+									if(g_game_over == NULL)
+									{
+										return 0;
+									}
+									/*delete [] p_threats; 
+									SDLCommonFunc:: CleanUp();
+									SDL_Quit();*/
+									return 1;
+								}
 							}
 						}
 					}
 				}
 
+				// check collision main bullet & threat 
 				std::vector<AmoObject*> amo_list2 = plane_object.GetAmoList();
 				for(int am = 0; am < amo_list2.size(); am ++)
 				{
@@ -246,6 +331,8 @@ int main(int arc, char*argv[])
 						bool ret_col = SDLCommonFunc::CheckCollision(p_amo->GetRect(), p_threat->GetRect());
 						if(ret_col)
 						{
+							mark_value++;
+
 							for(int ex = 0; ex < 4; ex ++)
 							{
 								int x_pos = p_amo->GetRect().x - EXP_WIDTH*0.5;
@@ -267,6 +354,24 @@ int main(int arc, char*argv[])
 				}
 			}
 		}
+		
+		// show time to play game
+		std::string str_time = "Time: ";
+		Uint32 time_value = SDL_GetTicks()/1000;
+		std::string str_val = std::to_string(time_value);
+		str_time += str_val;
+
+		time_game.SetText(str_time);
+		time_game.SetRect(1150, 10);
+		time_game.CreateGameText(g_font_text, g_screen);
+
+		// show mark value in screen
+		std::string val_str_mark = std::to_string(mark_value);
+		std::string strMark("Mark: ");
+		strMark += val_str_mark;
+
+		mark_game.SetText(strMark);
+		mark_game.CreateGameText(g_font_text, g_screen);
 
 		// update screen
 		if(SDL_Flip(g_screen) == -1)
